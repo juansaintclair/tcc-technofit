@@ -3,7 +3,7 @@ let config = {
     port     : '3306',
     user     : 'technofit',
     password : '255255',
-    database : 'technofit' 
+    database : 'technofit'
   };
    
   module.exports = config;
