@@ -8,24 +8,27 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles({
   table: {
-    padding: 30,
     minWidth: 650,
   },
-  containerTable: {
-    padding: 100
-  },
-  pagination: {
-    '& > *': {
-      marginTop: 10,
-    },
-  },
+  container: {
+    marginTop: 20
+  }
 });
 
+function nextPayment(dataProximoPagamento) {
+  let payment = new Date(dataProximoPagamento);
+  payment = ('0' + payment.getDate()).slice(-2) + '/'
+            + ('0' + (payment.getMonth()+1)).slice(-2) + '/'
+            + payment.getFullYear();
+  return payment;
+}
+
 function renderMonitoring(aluno) {
+  let proximoPagamento = nextPayment(aluno.proximoPagamento)
+  
   return (
     <TableRow key={aluno.matricula}>
       <TableCell align="right">{aluno.matricula}</TableCell>
@@ -34,29 +37,20 @@ function renderMonitoring(aluno) {
       </TableCell>
       <TableCell align="right">{aluno.cpf}</TableCell>
       <TableCell align="right">{aluno.telefone}</TableCell>
-      {/* <TableCell align="right">{aluno.carbs}</TableCell> */}
-      <TableCell align="right">{aluno.status}</TableCell>
+      <TableCell align="right">{proximoPagamento}</TableCell>
+      <TableCell align="right">{aluno.statusPagamento}</TableCell>
     </TableRow>
   );
 }
 
-function handleChange(event) {
-  //@todo receber o valor da paginação clicada.
-  console.log("change", event.target.value);
-}
 
 function MonitoringAlunos(props) {
   let { alunos } = props;
-  let pagination = {
-    page: alunos.page,
-    total: alunos.total
-  }
+
   const classes = useStyles();
-  alunos = alunos.result;
 
   return (
-    <div className={classes.containerTable}>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} className={classes.container}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -64,7 +58,7 @@ function MonitoringAlunos(props) {
               <TableCell>Nome</TableCell>
               <TableCell align="right">CPF</TableCell>
               <TableCell align="right">Telefone</TableCell>
-              {/* <TableCell align="right">Carbs&nbsp;(g)</TableCell> */}
+              <TableCell align="right">Data Próx. Pagamento</TableCell>
               <TableCell align="right">Status</TableCell>
             </TableRow>
           </TableHead>
@@ -74,11 +68,7 @@ function MonitoringAlunos(props) {
             } 
           </TableBody>
         </Table>
-        <div className={classes.pagination}>
-          <Pagination count={pagination.total} page={pagination.page} onChange={handleChange} />
-        </div>
       </TableContainer>
-    </div>
   );
 }
 

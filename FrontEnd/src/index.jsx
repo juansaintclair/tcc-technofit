@@ -33,6 +33,7 @@ ReactDOM.render(
     <Router basename="/">
       <Switch>
         <Route exact path="/" component={Main} />
+        <Route exact path="/aluno/add" component={Main} />
         <Route exact path="/info" component={Info} />
         <Route exact path="/api/healthcheck" component={HealthCheck} />
         <Route exact path="main.js" />
