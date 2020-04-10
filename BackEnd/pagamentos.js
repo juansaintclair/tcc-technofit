@@ -45,7 +45,7 @@ function _defineNextPayment(tipoPlano, ultimoPagamento, diaPagamento) {
     return nextPayment;
 }
 
-async function add(matricula, res) {
+function add(matricula, res) {
     console.log("LOG INFO: Entrou na função de add Pagamento.")
     config.multipleStatements = true;
     let connection = mysql.createConnection(config);
@@ -73,10 +73,6 @@ async function add(matricula, res) {
     connection.end();    
 }
 
-function addByMatricula(matricula, res) {
-    //@TODO verificar se é melhor fazer essa função ou se é melhor fazer tudo na mesma função de cima. 
-    //Mas tem que pegar o aluno por matrícula do banco e não do json que vem.
-}
 
 module.exports = {
     add: add

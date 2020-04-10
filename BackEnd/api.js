@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 const app = express();         
 const bodyParser = require('body-parser');
 const port = 5000;
@@ -7,16 +8,17 @@ const pagamentos = require('./pagamentos.js')
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors())
 
 app.get('/healthcheck', (req, res) => {
     res.send("OK");
 });
 
 //Get Todos Ativos e Inativos
-app.get('/alunos/:page?', (req, res) =>{
+app.get('/alunos/:page?/:status?', (req, res) =>{
     console.log('LOG Info: Iniciado Get Alunos.');
     const page = (req.params.page)?parseInt(req.params.page):1;
-    alunosDb.get(res, page, null);
+    alunosDb.get(res, page, parseInt(req.params.status));
 });
 
 //Get Todos Alunos Ativos
@@ -34,7 +36,7 @@ app.get('/alunos/inativos/:page?', (req, res) =>{
 });
 
 //Get Get Aluno By Matricula
-app.get('/alunos/matricula/:matricula?', (req, res) =>{
+app.get('/alunosmatricula/:matricula/:page?', (req, res) =>{
     console.log('LOG Info: Iniciado Get Aluno by ID');
     alunosDb.getByMatricula(parseInt(req.params.matricula), res);
 })
