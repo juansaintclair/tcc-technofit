@@ -73,7 +73,73 @@ function add(matricula, res) {
     connection.end();    
 }
 
+function get(matricula, res) {
+    console.log("LOG INFO: Entrou na função de get Pagamento by matrícula.")
+    config.multipleStatements = true;
+    let connection = mysql.createConnection(config);
+
+    let sql = `SELECT p.idPagamento, p.dataPagamentoEfetuado, p.valorPago, p.aluno_matricula as matricula, p.dataPagamentoPrevisto, p.status, a.valorMensalidade\
+    FROM technofit.pagamento as p\ 
+    LEFT JOIN technofit.aluno as a\
+       on a.matricula = p.aluno_matricula\
+    where aluno_matricula=?
+    ORDER BY p.dataPagamentoPrevisto desc;`
+    connection.query(sql, [matricula], function(error, results, fields){
+        if (error)  {
+            res.status(500).send({error: "Erro inesperado."})
+            console.log('LOG Error: ', error);
+        }        
+
+        console.log("LOG INFO: Select pagamento by matrícula realizado com sucesso.");
+        res.json({
+            result: results,
+        });
+    });    
+    connection.end();    
+}
+
+
+function pay(idPagamento, valor, res) {
+    console.log("LOG INFO: Entrou na função de realizar Pagamento.");
+    config.multipleStatements = true;
+    let today = new Date();
+        today = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+    let connection = mysql.createConnection(config);
+    let sql = "UPDATE pagamento SET dataPagamentoEfetuado = ?, valorPago = ?, status = 2 WHERE idPagamento = ?;SELECT aluno_matricula FROM pagamento WHERE idPagamento = ?;";
+
+    connection.query(sql, [today, valor, idPagamento, idPagamento], function(error, results, fields){
+        if (error)  {
+            res.status(500).send({error: "Erro inesperado."})
+            console.log('LOG Error: ', error);
+        }        
+        console.log('LOG INFO: Pagamento realizado com sucesso.');
+
+        add(results[1][0].aluno_matricula, res);
+        // _defineStatusAluno(results[1][0].aluno_matricula, res);
+    });    
+    connection.end();    
+}
+
+// function _defineStatusAluno(matricula) {
+//     console.log("LOG INFO: Entrou na função de verificar status do aluno.");
+//     let connection = mysql.createConnection(config);
+//     let sql = "select * from pagamento where aluno_matricula = 95 ORDER BY DataPagamentoEfetuado desc LIMIT 1;"
+//     connection.query(sql, [today, valor, idPagamento, idPagamento], function(error, results, fields){
+//         if (error)  {
+//             res.status(500).send({error: "Erro inesperado."})
+//             console.log('LOG Error: ', error);
+//         }        
+//         console.log('LOG INFO: Pagamento realizado com sucesso.');
+
+//         add(results[1][0].aluno_matricula, res);
+//         _defineStatusAluno(results[1][0].aluno_matricula, res);
+//     });    
+//     connection.end();    
+// }
+
 
 module.exports = {
-    add: add
+    add: add,
+    get: get,
+    pay: pay
 }

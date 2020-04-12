@@ -129,9 +129,68 @@ function get(res, page, status) {
     });                       
 }
 
+function getAll(res) {
+    let sql;
+
+    sql = `SELECT distinct a.matricula, a.nome, a.cpf, a.telefone, s.nome as statusPagamento, p.dataPagamentoPrevisto as proximoPagamento, a.ativo\
+            FROM technofit.aluno as a\
+            LEFT JOIN technofit.pagamento as p\
+                on a.matricula = p.aluno_matricula\
+            LEFT JOIN technofit.statuspagamento as s\
+                on a.statuspagamento_idstatusPagamento = s.idstatusPagamento WHERE p.status = 1 AND `;
+    sql += `a.ativo = 1 OR a.ativo = 2 `;      
+    sql += `GROUP BY a.matricula\
+            ORDER BY a.nome`;
+    
+    let connection = mysql.createConnection(config);
+    connection.query(sql, function(error, results, fields){
+        
+        if(error)  {
+            res.status(500).send({error: "Erro inesperado."})
+            console.log('LOG Error: ', error);
+        }
+        else {
+            console.log('LOG Info: Relatório de todos os alunos efetuado com sucesso.');  
+            res.json({
+                result: results,
+            });
+        }
+        connection.end();
+    });                       
+}
+
+function getAllInadimplentes(res) {
+    let sql;
+
+    sql = `SELECT distinct a.matricula, a.nome, a.cpf, a.telefone, s.nome as statusPagamento, p.dataPagamentoPrevisto as proximoPagamento, a.ativo\
+            FROM technofit.aluno as a\
+            LEFT JOIN technofit.pagamento as p\
+                on a.matricula = p.aluno_matricula\
+            LEFT JOIN technofit.statuspagamento as s\
+                on a.statuspagamento_idstatusPagamento = s.idstatusPagamento WHERE p.status = 1 AND `;
+    sql += `a.ativo = 1 OR a.ativo = 2 AND statuspagamento_idstatusPagamento = 2 `;      
+    sql += `GROUP BY a.matricula\
+            ORDER BY a.nome`;
+    
+    let connection = mysql.createConnection(config);
+    connection.query(sql, function(error, results, fields){
+        
+        if(error)  {
+            res.status(500).send({error: "Erro inesperado."})
+            console.log('LOG Error: ', error);
+        }
+        else {
+            console.log('LOG Info: Relatório de todos os alunos efetuado com sucesso.');  
+            res.json({
+                result: results,
+            });
+        }
+        connection.end();
+    });                       
+}
+
 function getByName(nome, page, res) {
     nome = `%${nome}%`;
-    
 
     let params;
     let sql;
@@ -260,5 +319,7 @@ module.exports = {
     add: add,
     get: get,
     update: update,
-    getByName: getByName
+    getByName: getByName,
+    getAll: getAll,
+    getAllInadimplentes: getAllInadimplentes
 };

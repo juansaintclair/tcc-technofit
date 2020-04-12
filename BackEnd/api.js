@@ -21,6 +21,17 @@ app.get('/alunos/:page?/:status?', (req, res) =>{
     alunosDb.get(res, page, parseInt(req.params.status));
 });
 
+//Get Todos Ativos e Inativos
+app.get('/todosinadimplentes', (req, res) =>{
+    console.log('LOG Info: Iniciado Get All Alunos Inadimplentes.');
+    alunosDb.getAllInadimplentes(res);
+});
+
+app.get('/todosAlunos', (req, res) =>{
+    console.log('LOG Info: Iniciado Get All Alunos.');
+    alunosDb.getAll(res);
+});
+
 //Get Todos Alunos Ativos
 app.get('/alunos/ativos/:page?', (req, res) =>{
     console.log('LOG Info: Iniciado Get Alunos Ativos.');
@@ -58,6 +69,18 @@ app.post('/alunos', (req, res) =>{
 app.post('/pagamentos/:matricula', (req, res) =>{
     console.log('LOG Info: Iniciado POST para Incluir Pagamento.');
     pagamentos.add(parseInt(req.params.matricula), res);
+})
+
+//Realizar Pagamento por Matrícula
+app.post('/realizarpagamento/:matricula/:valor', (req, res) =>{
+    console.log('LOG Info: Iniciado POST para Realizar Pagamento.');
+    pagamentos.pay(parseInt(req.params.matricula), parseInt(req.params.valor), res);
+})
+
+//Get Pagamento por Matrícula
+app.get('/pagamentomatricula/:matricula', (req, res) =>{
+    console.log('LOG Info: Iniciado Get pagamento por matrícula.');
+    pagamentos.get(parseInt(req.params.matricula), res);
 })
 
 //Delete Inativação do aluno
