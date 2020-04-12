@@ -13,6 +13,11 @@ import Main from './pages/Main';
 import NotFound from './pages/NotFound';
 import Info from './pages/Info';
 import HealthCheck from './pages/HealthCheck';
+import EditAluno from './pages/EditAluno';
+import AddAluno from './pages/AddAluno';
+import AddPagamento from './pages/AddPagamento';
+import RelatorioAlunos from './pages/RelatorioAlunos';
+import RelatorioInadimplentes from './pages/RelatorioInadimplentes';
 
 const theme = createMuiTheme({
   palette: {
@@ -33,7 +38,12 @@ ReactDOM.render(
     <Router basename="/">
       <Switch>
         <Route exact path="/" component={Main} />
-        <Route exact path="/aluno/add" component={Main} />
+        <Route exact path="/alunos" component={Main} />
+        <Route exact path="/alunos/add" component={AddAluno} />
+        <Route exact path="/alunos/edit/:matricula" component={EditAluno} />
+        <Route exact path="/pagamentos/:matricula" component={AddPagamento} />
+        <Route exact path="/relatorio/alunos" component={RelatorioAlunos} />
+        <Route exact path="/relatorio/inadimplentes" component={RelatorioInadimplentes} />
         <Route exact path="/info" component={Info} />
         <Route exact path="/api/healthcheck" component={HealthCheck} />
         <Route exact path="main.js" />

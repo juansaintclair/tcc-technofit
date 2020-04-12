@@ -9,13 +9,21 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import { deepOrange } from '@material-ui/core/colors';
-
+import { Link } from 'react-router-dom';
 
 const options = [
-  'Alunos',
-  'Pagamento',
-  'Relatório de Alunos',
-  'Relatório de Alunos Inadimplentes'
+  {
+    name: 'Alunos',
+    value: '/alunos'
+  },
+  {
+    name: 'Relatório de Alunos',
+    value: '/relatorio/alunos'
+  },
+  {
+    name: 'Relatório de Alunos Inadimplentes',
+    value: '/relatorio/inadimplentes'
+  }
 ];
 
 const ITEM_HEIGHT = 48;
@@ -56,7 +64,7 @@ function Header() {
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(event.currentTarget);    
   };
 
   const handleClose = () => {
@@ -88,8 +96,8 @@ function Header() {
           }}
         >
           {options.map((option) => (
-            <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-              {option}
+            <MenuItem key={option.value} onClick={(e)=>handleClose()}>
+              <Link to={`${option.value}`}>{option.name}</Link>
             </MenuItem>
           ))}
         </Menu>
