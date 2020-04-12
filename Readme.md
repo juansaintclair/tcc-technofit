@@ -17,7 +17,7 @@ yarn
 
 Rodar o template em dev:
 ```
-npm run start
+yarn start
 ```
 Um servidor irá começar a rodar na porta 3000 (padrão).
 
@@ -38,7 +38,7 @@ npm run test:watch
 ```
 ## Observações
 Mais atualizações conforme o minimal template for evoluindo.
-Todos os comandos podem ser substituidos de `npm run` por `yarn`, ex: ```yarn start``` 
+Todos os comandos podem ser substituidos de `npm run` por `yarn`, ex: ```yarn build``` 
 Para dúvidas, informações, dicas e sugestões: juansaintclair@gmail.com
 
 ## Back-End
