@@ -2,7 +2,7 @@
 
 ## Início
 Necessário ter o **NodeJS** e o **Yarn** instalados na máquina, caso não tenha, [você precisará aqui para baixar o NodeJS](https://nodejs.org/en/) e [aqui para o Yarn](https://yarnpkg.com/lang/en/).
-Um servidor **MySql** também é obrigatório estar rodando na porta 5000. O Dump do banco se encontra na pasta `Database`.
+Um servidor **MySql** também é obrigatório estar rodando na porta 5000. O .sql com a estrutura do banco se encontra na pasta `Database`.
 O Front-End foi desenvolvido em React e o Back-End em Node.
 
 ## Front-End
